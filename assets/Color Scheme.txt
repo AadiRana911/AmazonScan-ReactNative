@@ -1,0 +1,4 @@
+Background:
+RGB: 44, 60, 92
+HEX: #2c3c5c
+HSL: 219, 35%, 26%
