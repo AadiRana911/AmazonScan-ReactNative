@@ -50,6 +50,7 @@ export const styles = StyleSheet.create({
   buttonStyle: {
     marginTop: '20%',
     width: '90%',
+    marginBottom: '10%',
     // top: '10',
     alignItems: 'center',
     alignSelf: 'center',

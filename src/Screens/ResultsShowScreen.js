@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, Text, Image, StyleSheet,} from 'react-native';
+import {View, Text, Image, StyleSheet, FlatList} from 'react-native';
 import {Rating} from 'react-native-elements';
-import { FlatList } from 'react-native-gesture-handler';
+
 
 const ResultsShowScreen = ({route}) => {
     const {title, label, rating, ratingsTotal, image, specs, price} = route.params;
@@ -25,23 +25,27 @@ const ResultsShowScreen = ({route}) => {
         <Text style = {[styles.specs, {fontWeight: 'bold'}]}>Specs:</Text>
         <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',alignSelf: 'center', width: '100%'}}>
             <FlatList
+                contentContainerStyle = {{paddingBottom: 15}}
                 data = {specs}
                 keyExtractor = {spec => spec.name}
                 renderItem = {({item}) => {
                     return (
-                        <Text style = {styles.specs}>{item['name']}:</Text>
+                        <View style = {{flexDirection: 'row',justifyContent: 'space-between'}}>
+                            <Text style = {styles.specs}>{item['name']}:</Text>
+                            <Text style = {[styles.specs, {width: '50%'}]}>{item['value']}</Text>
+                        </View>
                     );
                 }}
             />
-            <FlatList
+            {/* <FlatList
                 data = {specs}
                 keyExtractor = {spec => spec.name}
                 renderItem = {({item}) => {
                     return (
-                        <Text style = {styles.specs}>{item['value']}</Text>
+                        <Text style = {styles.specs}></Text>
                     );
                 }}
-            />
+            /> */}
         </View>
         
         {/* <Text style = {styles.specs}>{specs}</Text> */}
@@ -96,6 +100,7 @@ const styles = StyleSheet.create({
     },
     specs: {
         color: 'white',
+        // marginBottom: 15,
         // letterSpacing: 1,
     }
 

@@ -2,13 +2,13 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
-import React, {useState, useEffect} from 'react';
-import {View, Text, Image, TextInput, TouchableOpacity, Alert, Switch, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {ActivityIndicator, View, Text, Image, TextInput, TouchableOpacity, Alert, Switch, StyleSheet} from 'react-native';
 import {styles} from '../Styles/style';
 import {RNCamera} from 'react-native-camera';
-import RNBeep from 'react-native-a-beep';
 import axios from 'axios';
-import Entypo from 'react-native-vector-icons/Entypo';
+// import Entypo from 'react-native-vector-icons/Entypo';
+// import RNBeep from 'react-native-a-beep'
 
 
 // set up the request parameters
@@ -19,14 +19,17 @@ const HomeScreen = ({navigation}) => {
   const [isCaptured, setIsCaptured] = useState(false);
   let currentBarCodeValue = '';
   let results;
+  const [isRequested, setIsRequested] = useState(false);
  const rainForestSearchApi = async(paramsToSearch) => {
    try{
     console.log('Current: ', currentBarCodeValue);
-    const res = await axios.get('https://api.rainforestapi.com/request', { params: paramsToSearch })
+    setIsRequested(true);
+    const res = await axios.get('https://api.rainforestapi.com/request', { params: paramsToSearch });
     // console.log(JSON.stringify(res.data.product,0,2));
 
     results = res.data.product;
-    console.log('R => ',results.title);
+    // console.log('R => ',results.title);
+    setIsRequested(false);
     navigation.navigate(
       'ResultsShow',
       {
@@ -39,7 +42,8 @@ const HomeScreen = ({navigation}) => {
         price: results.buybox_winner.price,
       });
    }catch(err){
-     Alert.alert("The requested gtin doesn't exist in Amazon's database")
+     setIsRequested(false);
+     Alert.alert(err.message);
    }
  };
 
@@ -47,9 +51,7 @@ const HomeScreen = ({navigation}) => {
 
   const onBarCodeRead = (e) => {
     setIsCaptured(true);
-
-    RNBeep.beep();
-
+    // RNBeep.beep();
     currentBarCodeValue = e.data;
     console.log('detected data', e.data, 'of type', typeof (e.data))
     console.log('CCBV', currentBarCodeValue);
@@ -65,7 +67,7 @@ const HomeScreen = ({navigation}) => {
     setTimeout(
       () => {
         setIsCaptured(false);
-      }, 10000);
+      }, 3000);
 };
 
 // const rainForestApi = async () => {
@@ -126,6 +128,14 @@ const HomeScreen = ({navigation}) => {
 
           />
         </View>
+        {isRequested && 
+              <View style={[styles.container, styles.horizontal]}>
+                {/* <ActivityIndicator />
+                <ActivityIndicator size="large" />
+                <ActivityIndicator size="small" color="#0000ff" /> */}
+                <ActivityIndicator style = {{marginTop: '10%'}} size="large" color="#00ff00" />
+              </View>
+            }
          {/* <View>
           <TouchableOpacity style = {[styles.buttonStyle, style.scanButtonTransformation]}>
               <Text style = {styles.buttonTextStyle}>Scan</Text>
@@ -142,9 +152,9 @@ const HomeScreen = ({navigation}) => {
           <TextInput style = {style.upcCodeOutputStyle} value = {currentBarCodeValue}/>
         </View>
       </View>
-      <TouchableOpacity onPress = {() => {}}>
+      {/* <TouchableOpacity onPress = {() => {}}>
         <Entypo style = {style.icon} color = {'#fff'} name = 'log-out'/>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -229,6 +239,18 @@ const style = StyleSheet.create({
   icon: {
     fontSize: 38,
     // backgroundColor: 'green',
+  },
+  activityContainer: {
+    flex: 1,
+    backgroundColor: 'red',
+    justifyContent: "center",
+    marginVertical: '5%',
+    paddingTop: '100%' 
+  },
+  activityHorizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });
 

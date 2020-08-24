@@ -2,55 +2,99 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
-import React,{useState, useEffect} from 'react';
-import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
+import React,{useState, useEffect, createRef} from 'react';
+import {View, Text, Image, TextInput, TouchableOpacity, Alert} from 'react-native';
 import {styles} from '../Styles/style';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import AsyncStorage from '@react-native-community/async-storage';
 import CountDown from 'react-native-countdown-component';
 import auth from '@react-native-firebase/auth';
+// import {requestReadSMSPermission, startReadSMS} from 'react-native-read-sms/ReadSms';
+import {
+    confirmOTP,
+    authState,
+    signInWithPhone,
+    signup,
+  } from '../actions/auth';
 
-const OTPScreen = ({navigation,route}) => {
+const OTPScreen = ({navigation,route}, props) => {
     const [time, setTime] = useState(60);
+    const [loader, setLoader] = useState(false);
+    const otpRef = createRef('otp');
     const [otp,setOtp] = useState('');
+    const [resend, setResend] = useState(false);
     const [isOtpSent, setIsOtpSent] = useState(true);
     const {confirm} = route.params;
     const [confirmed, setConfirmed] = useState(confirm);
-    const [initializing, setInitializing] = useState(true);
-    const [user, SetUser] = useState();
+    let message = '';
 
     async function resendCode() {
         try {
             const {phoneNum} = route.params;
-            console.log('MyPhoneNumber==========>' + phoneNum);
+            // console.log('MyPhoneNumber==========>' + phoneNum);
             const confirmation = await auth().signInWithPhoneNumber(phoneNum);
             setConfirmed(confirmation);
-            console.log('Confirmed is =>>>>>>>>>>>>', confirmed);
+            // console.log('Confirmed is =>>>>>>>>>>>>', confirmed);
             setIsOtpSent(true);
         }catch(e){
-            alert(e.message);
+            alert(e.message, 'hello');
         }
     }
     async function confirmCode() {
         try {
             const response = await confirmed.confirm(otp);
             response && await AsyncStorage.setItem('isLoggedIn', 'true');
-            alert('Done');
-            if (!initializing && user){
-                navigation.navigate('Home');
-            }
+            navigation.navigate('Home');
         } catch (error) {
-           alert(error.message);
+           alert(error.message, 'hello');
         }
     }
-    const onAuthStateChanged = (user1) => {
-        SetUser(user1);
-        if (initializing) setInitializing(false);
-    };
+
+    const handlerFunction = () => {
+        if (!otp) {
+          Alert.alert(null, 'Please enter your otp');
+          otpRef.current.focus();
+        } else {
+          const {confirmOTP} = props;
+          setLoader(true);
+          let promise = new Promise((rsl, rej) => {
+            confirmOTP(otp, confirmed, rsl, rej);
+          });
+          promise.catch(err => {
+            Alert.alert('Sorry', err);
+          });
+        }
+      };
+    
+    // const startReadSms = async () => {
+    //     try{
+    //         const hasPermission = await requestReadSMSPermission();
+    //         if(hasPermission){
+    //             startReadSMS((status, sms, error) => {
+    //                 if (status == "success") {
+    //                     message = sms;
+    //                     console.log("Great!! you have received new sms:", message);
+    //                     // Alert.alert("Great!! you have received new sms:", message);
+    //                     setOtp(sms.split(' ')[0]);
+    //                 }
+    //             });
+    //         }else{
+    //             alert("deinied");
+    //         }
+    //     }catch(e){
+    //         alert(e);
+    //     }
+    // };
 
     useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscriber; // unsubscribe on unmount
+        setConfirmed(confirm);
+        let promise = new Promise((rsl, rej) => {
+          props.authState(rsl, rej);
+        });
+        promise.then(res => {
+          // alert('success');
+          handlerFunction();
+        });
       }, []);
 
     return (
@@ -61,7 +105,7 @@ const OTPScreen = ({navigation,route}) => {
                 <View style = {[styles.nestedContainerL2]}>
                 <Text style = {styles.textStyle}>OTP</Text>
                 <View style = {[styles.nestedContainerL3]}>
-                    <TextInput onChangeText={e=>{setOtp(e)}} value = {otp} style = {[styles.phoneNumberInputStyle, {width: '100%'}]} placeholderTextColor = "#fff" placeholder = "_ _ _ _ _ _ _ _ _ _ " keyboardType = {'number-pad'}/>
+                    <TextInput ref={otpRef} onChangeText={e=>{setOtp(e)}} value = {otp} style = {[styles.phoneNumberInputStyle, {width: '100%'}]} placeholderTextColor = "#fff" placeholder = "__  __  __  __  __  __ " keyboardType = {'number-pad'} maxLength = {6} />
                 </View>
                 <View style = {{flexDirection: 'row', justifyContent: 'flex-end', marginTop: '1%'}}>
                 {isOtpSent && <Text style = {{alignSelf: 'center', color: '#fff', fontSize: 15}}>Resend OTP in:</Text>}
