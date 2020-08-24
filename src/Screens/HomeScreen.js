@@ -8,12 +8,14 @@ import {styles} from '../Styles/style';
 import {RNCamera} from 'react-native-camera';
 import RNBeep from 'react-native-a-beep';
 import axios from 'axios';
+import Entypo from 'react-native-vector-icons/Entypo';
+
 
 // set up the request parameters
 
 
 const HomeScreen = ({navigation}) => {
-  const [isEnabled, setIsEnabled] = useState(false);
+  // const [isEnabled, setIsEnabled] = useState(false);
   const [isCaptured, setIsCaptured] = useState(false);
   let currentBarCodeValue = '';
   let results;
@@ -30,7 +32,6 @@ const HomeScreen = ({navigation}) => {
       {
         title: results.title,
         label: results.label,
-        link: results.link,
         rating: results.rating,
         ratingsTotal: results.ratings_total,
         image: results.main_image.link,
@@ -42,7 +43,7 @@ const HomeScreen = ({navigation}) => {
    }
  };
 
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const onBarCodeRead = (e) => {
     setIsCaptured(true);
@@ -61,9 +62,10 @@ const HomeScreen = ({navigation}) => {
     // Alert.alert('Barcode value is '+e.data, ' Barcode type is '+e.type);
     rainForestSearchApi(paramsToSearch);
     // console.log(JSON.stringify(response.data, 0, 2));
-    setTimeout(() => {
-      setIsCaptured(false);
-    }, 3000);
+    setTimeout(
+      () => {
+        setIsCaptured(false);
+      }, 10000);
 };
 
 // const rainForestApi = async () => {
@@ -78,7 +80,7 @@ const HomeScreen = ({navigation}) => {
   return(
     <View style = {[styles.Container, style.container]}>
       <View style = {style.view2}>
-        <View style = {[style.view3]}>
+        {/* <View style = {[style.view3]}>
           <Text style = {[styles.textStyle, style.switchTextLeft]}>Single</Text>
           <Switch
             trackColor={{ false: '#fff', true: '#00f000' }}
@@ -88,7 +90,7 @@ const HomeScreen = ({navigation}) => {
             value={isEnabled}
             style = {style.switchStyle} />
             <Text style = {[styles.textStyle, style.switchTextRight]}>Multiple</Text>
-        </View>
+        </View> */}
         <View  style = {[style.camView]}>
         <RNCamera
           style={styles.preview}
@@ -140,6 +142,9 @@ const HomeScreen = ({navigation}) => {
           <TextInput style = {style.upcCodeOutputStyle} value = {currentBarCodeValue}/>
         </View>
       </View>
+      <TouchableOpacity onPress = {() => {}}>
+        <Entypo style = {style.icon} color = {'#fff'} name = 'log-out'/>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -150,14 +155,14 @@ const style = StyleSheet.create({
     flex: 1,
   },
   view2: {
-    flex: 0.55, 
-    justifyContent: 'space-between'
+    flex: 0.55,
+    justifyContent: 'space-between',
   },
   view3: {
-    flexDirection: 'row', 
-    justifyContent: 'flex-end', 
-    width: '90%', 
-    marginBottom: '10%'
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    width: '90%',
+    marginBottom: '10%',
   },
   switchTextLeft: {
     marginRight: 10,
@@ -168,13 +173,13 @@ const style = StyleSheet.create({
   switchStyle: {
     transform: [
       { scaleX: 1.4 },
-      { scaleY: 1.4 }
+      { scaleY: 1.4 },
     ]
   },
   camView: {
 
-    borderColor: '#3393e6', 
-    height: '70%', 
+    borderColor: '#3393e6',
+    height: '70%',
     justifyContent: 'center',
     // flex: 1,
     padding: 50,
@@ -183,7 +188,7 @@ const style = StyleSheet.create({
     },
   // scanButtonTransformation: {
   //   transform: [
-  //     { scaleX: 0.6 }, 
+  //     { scaleX: 0.6 },
   //     { scaleY: 0.6 }
   //   ]
   // },
@@ -200,27 +205,31 @@ const style = StyleSheet.create({
     marginTop: '10%',
   },
   upcCodeInputStyle: {
-    backgroundColor: '#fff', 
-    width: '65%', 
-    borderRadius: 30, 
-    paddingHorizontal: 20
+    backgroundColor: '#fff',
+    width: '65%',
+    borderRadius: 30,
+    paddingHorizontal: 20,
   },
   upcCodeOutputStyle: {
-    backgroundColor: '#fff', 
-    width: '90%', 
-    borderRadius: 30, 
-    paddingHorizontal: 20
+    backgroundColor: '#fff',
+    width: '90%',
+    borderRadius: 30,
+    paddingHorizontal: 20,
   },
   addButtonStyle: {
-    width: '25%', 
-    backgroundColor: '#3393e6', 
-    paddingVertical: 5, 
-    borderRadius: 20, 
-    alignItems: 'center'
+    width: '25%',
+    backgroundColor: '#3393e6',
+    paddingVertical: 5,
+    borderRadius: 20,
+    alignItems: 'center',
   },
   addButtonText: {
     fontSize: 20,
-  }
+  },
+  icon: {
+    fontSize: 38,
+    // backgroundColor: 'green',
+  },
 });
 
 export default HomeScreen;

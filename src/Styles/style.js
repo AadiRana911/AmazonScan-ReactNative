@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     paddingTop: 120,
     paddingBottom: 20,
   },
- 
+
   nestedContainerL1: {
     // backgroundColor: '#ff0000',
     width: '90%',

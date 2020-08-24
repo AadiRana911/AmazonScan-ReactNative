@@ -5,7 +5,7 @@ import {Rating} from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 
 const ResultsShowScreen = ({route}) => {
-    const {title, label, link, rating, ratingsTotal, image, specs, price} = route.params;
+    const {title, label, rating, ratingsTotal, image, specs, price} = route.params;
     return(
         <View style = {styles.container}>
         <View style = {styles.imageView}>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     price: {
         color: 'white',
         fontSize: 26,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
 
     },
     imageView: {
