@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "950754573026",
-    "firebase_url": "https://scan-5abad.firebaseio.com",
-    "project_id": "scan-5abad",
-    "storage_bucket": "scan-5abad.appspot.com"
+    "project_number": "159748598690",
+    "firebase_url": "https://scan-c4618.firebaseio.com",
+    "project_id": "scan-c4618",
+    "storage_bucket": "scan-c4618.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:950754573026:android:a4fb9caf877446dc82bcbb",
+        "mobilesdk_app_id": "1:159748598690:android:59b9d84038d65fb14ca0fb",
         "android_client_info": {
           "package_name": "com.amazonscan"
         }
       },
       "oauth_client": [
         {
-          "client_id": "950754573026-rm4ql4feimc728jdc9mj5mrao0ohs8et.apps.googleusercontent.com",
+          "client_id": "159748598690-12ce9v0kj57jhu0pmm3hr04tmvsrh1p6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.amazonscan",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "950754573026-rsr0ru4448in7ddg3kc33bcqernj5m7g.apps.googleusercontent.com",
+          "client_id": "159748598690-8hshlj8i51u2s2jgr5rol4oll1dd2orh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAZhi_bcfj5tC-7ZdLYqx9uOjUW8ROadVE"
+          "current_key": "AIzaSyBDvnnD5f1URUoQfwgclKtPIScIHDL8v28"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "950754573026-rsr0ru4448in7ddg3kc33bcqernj5m7g.apps.googleusercontent.com",
+              "client_id": "159748598690-8hshlj8i51u2s2jgr5rol4oll1dd2orh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -12,16 +12,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 const SignIn = ({navigation}) => {
-    // useEffect(() => {
-    //     // Update the document title using the browser API
-    //     async function fetchSession(){
-    //         const value = await AsyncStorage.getItem('isLoggedIn');
-    //         // if (value === 'true' ){
-    //         //     navigation.navigate('Home');
-    //         // }
-    //     }
-    //     fetchSession();
-    //   },[]);
     const [toggle,setToggle] = useState(false);
     const [code, setCode] = useState('92');
     // const [confirm, setConfirm] = useState(null);
@@ -30,15 +20,13 @@ const SignIn = ({navigation}) => {
     async function signInWithPhoneNumber() {
         if (phone !== ''){
             try {
-                const confirmation = await auth().verifyPhoneNumber('+'+code+phone)
-                .on('state_changed', (phoneAuthSnapshot) => {
-                  console.log('Snapshot state: ', phoneAuthSnapshot.state);
-                  console.log('Snapshot state: ', phoneAuthSnapshot.code);
-                  console.log('Snapshot state: ', phoneAuthSnapshot.error);
-                  console.log('Snapshot state: ', phoneAuthSnapshot.verificationId);
-                  navigation.navigate('OTP',{authSnapshot: phoneAuthSnapshot});
-                });
-                console.log('=>>>>>>>>>>>>>>>>>>>',confirmation)
+                const confirmation = await auth().signInWithPhoneNumber('+'+code+phone);
+                // setConfirm(confirmation);
+                console.log('=>>>>>>>>>>>>>>>>>>>',confirmation._auth._app._automaticDataCollectionEnabled);
+                confirmation._auth._app._automaticDataCollectionEnabled = false;
+                console.log('==================>',confirmation._auth._app._automaticDataCollectionEnabled);
+
+                navigation.navigate('OTP',{confirmation});
             } catch (e){
                 alert(e.message);
             }

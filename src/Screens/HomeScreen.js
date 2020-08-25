@@ -149,7 +149,7 @@ const HomeScreen = ({navigation}) => {
         </View>
         <Text style = {[styles.textStyle, style.orButtonAlignment]}>Or</Text>  */}
         <View style = {style.bottomViewStyle}>
-          <TextInput onChangeText = {(e) => setUpc({data:e})} value = {upc} style = {style.upcCodeInputStyle} placeholder = 'Write your upc code here'/>
+          <TextInput onChangeText = {(e) => setUpc({data:e})} value = {upc} style = {style.upcCodeInputStyle} placeholder = 'Write your upc code here' keyboardType = 'number-pad'/>
           <TouchableOpacity style = {style.addButtonStyle} onPress = {() => {onBarCodeRead(upc, true)}}>
             <Text style = {[styles.buttonTextStyle, style.addButtonText]}>Add</Text>
           </TouchableOpacity>

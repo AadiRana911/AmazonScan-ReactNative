@@ -24,7 +24,7 @@ const OTPScreen = ({navigation,route}, props) => {
     const [otp,setOtp] = useState('');
     const [resend, setResend] = useState(false);
     const [isOtpSent, setIsOtpSent] = useState(true);
-    let {authSnapshot} = route.params;
+    let {confirmation} = route.params;
     // const [confirmed, setConfirmed] = useState(confirm);
     // let message = '';
 
@@ -42,63 +42,13 @@ const OTPScreen = ({navigation,route}, props) => {
     // }
     async function confirmCode() {
         try {
-            const credential = await auth.PhoneAuthProvider.credential(authSnapshot.verificationId, otp);
-            auth().signInWithCredential(credential);
+            await confirmation.confirm(otp);
             await AsyncStorage.setItem('isLoggedIn', 'true');
-            console.log(credential);
             navigation.navigate('Home');
         } catch (error) {
            alert(error.message, 'hello, hye');
         }
     }
-
-    // const handlerFunction = () => {
-    //     if (!otp) {
-    //       Alert.alert(null, 'Please enter your otp');
-    //       otpRef.current.focus();
-    //     } 
-    //     else {
-    //       const {confirmOTP} = props;
-    //       setLoader(true);
-    //       let promise = new Promise((rsl, rej) => {
-    //         confirmOTP(otp, confirmed, rsl, rej);
-    //       });
-    //       promise.catch(err => {
-    //         Alert.alert('Sorry', err);
-    //       });
-    //     }
-    //   };
-    
-    // const startReadSms = async () => {
-    //     try{
-    //         const hasPermission = await requestReadSMSPermission();
-    //         if(hasPermission){
-    //             startReadSMS((status, sms, error) => {
-    //                 if (status == "success") {
-    //                     message = sms;
-    //                     console.log("Great!! you have received new sms:", message);
-    //                     // Alert.alert("Great!! you have received new sms:", message);
-    //                     setOtp(sms.split(' ')[0]);
-    //                 }
-    //             });
-    //         }else{
-    //             alert("deinied");
-    //         }
-    //     }catch(e){
-    //         alert(e);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     setConfirmed(confirm);
-    //     let promise = new Promise((rsl, rej) => {
-    //       authState(rsl, rej);
-    //     });
-    //     promise.then(res => {
-    //       // alert('success');
-    //       handlerFunction();
-    //     });
-    //   }, []);
 
     return (
         <KeyboardAwareScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} enableOnAndroid={true}>
