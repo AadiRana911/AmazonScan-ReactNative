@@ -12,16 +12,16 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 const SignIn = ({navigation}) => {
-    useEffect(() => {
-        // Update the document title using the browser API
-        async function fetchSession(){
-            const value = await AsyncStorage.getItem('isLoggedIn');
-            // if (value === 'true' ){
-            //     navigation.navigate('Home');
-            // }
-        }
-        fetchSession();
-      },[]);
+    // useEffect(() => {
+    //     // Update the document title using the browser API
+    //     async function fetchSession(){
+    //         const value = await AsyncStorage.getItem('isLoggedIn');
+    //         // if (value === 'true' ){
+    //         //     navigation.navigate('Home');
+    //         // }
+    //     }
+    //     fetchSession();
+    //   },[]);
     const [toggle,setToggle] = useState(false);
     const [code, setCode] = useState('92');
     // const [confirm, setConfirm] = useState(null);
@@ -30,8 +30,15 @@ const SignIn = ({navigation}) => {
     async function signInWithPhoneNumber() {
         if (phone !== ''){
             try {
-                const confirmation = await auth().signInWithPhoneNumber('+' + code + phone);
-                navigation.navigate('OTP',{confirm: confirmation, phoneNum: '+' + code + phone});
+                const confirmation = await auth().verifyPhoneNumber('+'+code+phone)
+                .on('state_changed', (phoneAuthSnapshot) => {
+                  console.log('Snapshot state: ', phoneAuthSnapshot.state);
+                  console.log('Snapshot state: ', phoneAuthSnapshot.code);
+                  console.log('Snapshot state: ', phoneAuthSnapshot.error);
+                  console.log('Snapshot state: ', phoneAuthSnapshot.verificationId);
+                  navigation.navigate('OTP',{authSnapshot: phoneAuthSnapshot});
+                });
+                console.log('=>>>>>>>>>>>>>>>>>>>',confirmation)
             } catch (e){
                 alert(e.message);
             }
@@ -53,7 +60,7 @@ const SignIn = ({navigation}) => {
                         <Text style = {styles.textStyle}>{ `+${code}`}</Text>
                     </TouchableOpacity>
                     {toggle &&  <CountryPicker withCallingCode = {true} onSelect = {((country) => setCode(country.callingCode[0]))} style = {{color: '#2a3e5a'}} containerButtonStyle = {styles.countryCodeInputStyle} visible onClose = {() => setToggle(false)}/>}
-                    <TextInput   onChangeText={(e)=>setPhone(e)}  value={phone} style = {styles.phoneNumberInputStyle} placeholderTextColor = "#fff" placeholder = "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _" keyboardType = {'number-pad'}/>
+                    <TextInput   onChangeText={(e)=>setPhone(e)}  value={phone} style = {styles.phoneNumberInputStyle} placeholderTextColor = "#fff" placeholder = "__ __ __ __ __ __ __ __ __ __ __" keyboardType = {'number-pad'}/>
                 </View>
                 </View>
                 <TouchableOpacity style = {[styles.buttonStyle]} onPress = {(phoneNumber) => signInWithPhoneNumber(phoneNumber)}>

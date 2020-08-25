@@ -1,84 +1,59 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, Text, Image, StyleSheet, FlatList} from 'react-native';
+import {View, Text, Image, StyleSheet, FlatList, ScrollView} from 'react-native';
 import {Rating} from 'react-native-elements';
 
 
 const ResultsShowScreen = ({route}) => {
     const {title, label, rating, ratingsTotal, image, specs, price} = route.params;
-    return(
-        <View style = {styles.container}>
-        <View style = {styles.imageView}>
-            <Image source = {{uri: image}} style = {styles.image}/>
-        </View>
-        <View>
+    return (
+        <ScrollView  contentContainerStyle = {[{flexGrow: 1,}]} style={[styles.container]}>
+            <Image source = {{uri: image}} style = {styles.image} resizeMode = {'contain'}/>
             <Text style = {styles.title}>{title}</Text>
             <Text style = {[styles.label, {marginBottom: '1%'}]}>{label}</Text>
-            <View style = {[styles.ratingAndReviewsAndPrice, {justifyContent: 'space-between'}]}>
+            <View style = {[styles.ratingAndReviewsAndPrice, {justifyContent: 'space-between', paddingRight: '3%'}]}>
                 <View style = {[styles.ratingAndReviewsAndPrice, {justifyContent: 'flex-start'}]}>
                     <Rating imageSize={20} readonly startingValue={rating} tintColor = {'#2a3e5a'}/>
                     <Text style = {styles.totalRatings}>({ratingsTotal})</Text>
                 </View>
                 <Text style = {[styles.price,{alignSelf: 'flex-end'}]}>{price['raw']}</Text>
             </View>
-        </View>
-        <Text style = {[styles.specs, {fontWeight: 'bold'}]}>Specs:</Text>
-        <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',alignSelf: 'center', width: '100%'}}>
+            <Text style = {[styles.specs, {fontWeight: 'bold', fontSize: 16}]}>Specs:</Text>
             <FlatList
-                contentContainerStyle = {{paddingBottom: 15}}
                 data = {specs}
                 keyExtractor = {spec => spec.name}
                 renderItem = {({item}) => {
                     return (
-                        <View style = {{flexDirection: 'row',justifyContent: 'space-between'}}>
-                            <Text style = {styles.specs}>{item['name']}:</Text>
-                            <Text style = {[styles.specs, {width: '50%'}]}>{item['value']}</Text>
+                        <View style = {{flexDirection: 'row',justifyContent: 'space-between', marginBottom: '4%'}}>
+                            <Text style = {[styles.specs]}>{item['name']}:</Text>
+                            <Text style = {[styles.specs]}>{item['value']}</Text>
                         </View>
                     );
                 }}
             />
-            {/* <FlatList
-                data = {specs}
-                keyExtractor = {spec => spec.name}
-                renderItem = {({item}) => {
-                    return (
-                        <Text style = {styles.specs}></Text>
-                    );
-                }}
-            /> */}
-        </View>
-        
-        {/* <Text style = {styles.specs}>{specs}</Text> */}
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'flex-start',
-        flex: 1,
         backgroundColor: '#2a3e5a',
         paddingTop: '3%',
         paddingHorizontal: '3%',
+        flex:1,
     },
     price: {
         color: 'white',
         fontSize: 26,
         fontWeight: 'bold',
-
-    },
-    imageView: {
-        height: '40%',
-        width: '100%',
-        marginVertical: '5%',
     },
     image: {
         width: '100%',
-        height: '100%',
+        height:350,
         marginBottom: 5,
     },
     title: {
-        fontSize: 28,
+        fontSize: 26,
         fontWeight: 'bold',
         color: 'white',
     },
@@ -89,10 +64,8 @@ const styles = StyleSheet.create({
     },
     ratingAndReviewsAndPrice: {
         marginRight: '-4%',
-        alignSelf: 'center',
         width: '90%',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        alignItems: 'flex-start',
         flexDirection: 'row',
     },
     totalRatings: {
@@ -100,9 +73,8 @@ const styles = StyleSheet.create({
     },
     specs: {
         color: 'white',
-        // marginBottom: 15,
-        // letterSpacing: 1,
-    }
+        width: '50%',
+    },
 
 });
 

@@ -7,6 +7,7 @@ import {ActivityIndicator, View, Text, Image, TextInput, TouchableOpacity, Alert
 import {styles} from '../Styles/style';
 import {RNCamera} from 'react-native-camera';
 import axios from 'axios';
+
 // import Entypo from 'react-native-vector-icons/Entypo';
 // import RNBeep from 'react-native-a-beep'
 
@@ -19,6 +20,7 @@ const HomeScreen = ({navigation}) => {
   const [isCaptured, setIsCaptured] = useState(false);
   let currentBarCodeValue = '';
   let results;
+  const [upc, setUpc] = useState({data: ''});
   const [isRequested, setIsRequested] = useState(false);
  const rainForestSearchApi = async(paramsToSearch) => {
    try{
@@ -49,14 +51,18 @@ const HomeScreen = ({navigation}) => {
 
   // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-  const onBarCodeRead = (e) => {
+  const onBarCodeRead = (e, isUpcEntered) => {
     setIsCaptured(true);
     // RNBeep.beep();
-    currentBarCodeValue = e.data;
+    if(!isUpcEntered){
+      currentBarCodeValue = e.data;
+    }else{
+      currentBarCodeValue = upc.data;
+    }
     console.log('detected data', e.data, 'of type', typeof (e.data))
     console.log('CCBV', currentBarCodeValue);
     const paramsToSearch = {
-      api_key: '7F367D7092814A0CAA3D4FE010C44F1D',
+      api_key: '6BD8E203BA0D476CBBDB44CC4FDE7B13',
       type: 'product',
       amazon_domain: 'amazon.com',
       gtin: currentBarCodeValue,
@@ -104,7 +110,7 @@ const HomeScreen = ({navigation}) => {
           onBarCodeRead = {
             (e)=>{
               if (!isCaptured){
-                onBarCodeRead(e);
+                onBarCodeRead(e, false);
               }
             }}
           androidCameraPermissionOptions={{
@@ -133,7 +139,7 @@ const HomeScreen = ({navigation}) => {
                 {/* <ActivityIndicator />
                 <ActivityIndicator size="large" />
                 <ActivityIndicator size="small" color="#0000ff" /> */}
-                <ActivityIndicator style = {{marginTop: '10%'}} size="large" color="#00ff00" />
+                <ActivityIndicator style = {{marginTop: '20%'}} size="large" color="#00ff00" />
               </View>
             }
          {/* <View>
@@ -143,13 +149,10 @@ const HomeScreen = ({navigation}) => {
         </View>
         <Text style = {[styles.textStyle, style.orButtonAlignment]}>Or</Text>  */}
         <View style = {style.bottomViewStyle}>
-          <TextInput style = {style.upcCodeInputStyle} placeholder = 'Write your upc code here'/>
-          <TouchableOpacity style = {style.addButtonStyle}>
+          <TextInput onChangeText = {(e) => setUpc({data:e})} value = {upc} style = {style.upcCodeInputStyle} placeholder = 'Write your upc code here'/>
+          <TouchableOpacity style = {style.addButtonStyle} onPress = {() => {onBarCodeRead(upc, true)}}>
             <Text style = {[styles.buttonTextStyle, style.addButtonText]}>Add</Text>
           </TouchableOpacity>
-        </View>
-        <View style = {style.bottomViewStyle}>
-          <TextInput style = {style.upcCodeOutputStyle} value = {currentBarCodeValue}/>
         </View>
       </View>
       {/* <TouchableOpacity onPress = {() => {}}>
@@ -212,7 +215,7 @@ const style = StyleSheet.create({
     justifyContent: 'space-around',
     width: '90%',
     alignItems: 'center',
-    marginTop: '10%',
+    marginTop: '30%',
   },
   upcCodeInputStyle: {
     backgroundColor: '#fff',

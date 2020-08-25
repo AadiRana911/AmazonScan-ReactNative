@@ -1,10 +1,18 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.styles = void 0;
+
+var _reactNative = require("react-native");
+
 /* eslint-disable prettier/prettier */
-import {StyleSheet} from 'react-native';
-export const styles = StyleSheet.create({
+var styles = _reactNative.StyleSheet.create({
   camContainer: {
-    flex: 1,
-    // justifyContent: 'center',
+    flex: 1 // justifyContent: 'center',
     // alignItems: 'center',
+
   },
   Container: {
     flex: 1,
@@ -12,26 +20,25 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: '30%',
-    paddingBottom: '15%',
+    paddingBottom: '15%'
   },
-
   nestedContainerL1: {
     // backgroundColor: '#ff0000',
     width: '90%',
     height: '40%',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   nestedContainerL3: {
     flexDirection: 'row',
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   logoStyle: {
     width: 150,
-    height: 150,
+    height: 150
   },
   textStyle: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 16
   },
   countryCodeInputStyle: {
     borderBottomColor: '#fff',
@@ -39,13 +46,13 @@ export const styles = StyleSheet.create({
     width: '20%',
     marginRight: 20,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   phoneNumberInputStyle: {
     borderBottomColor: '#fff',
     borderBottomWidth: 1,
     width: '70%',
-    color: '#fff',
+    color: '#fff'
   },
   buttonStyle: {
     marginTop: '20%',
@@ -56,18 +63,18 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#3393e6',
     paddingVertical: 20,
-    borderRadius: 100,
-
-
+    borderRadius: 100
   },
   buttonTextStyle: {
-      fontSize: 22,
-      color: '#fff',
+    fontSize: 22,
+    color: '#fff'
   },
   preview: {
     flexDirection: 'column',
     alignSelf: 'center',
     width: 400,
-    height: 100,
-  },
+    height: 100
+  }
 });
+
+exports.styles = styles;

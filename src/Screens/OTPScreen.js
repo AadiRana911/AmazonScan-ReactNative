@@ -24,47 +24,50 @@ const OTPScreen = ({navigation,route}, props) => {
     const [otp,setOtp] = useState('');
     const [resend, setResend] = useState(false);
     const [isOtpSent, setIsOtpSent] = useState(true);
-    const {confirm} = route.params;
-    const [confirmed, setConfirmed] = useState(confirm);
-    let message = '';
+    let {authSnapshot} = route.params;
+    // const [confirmed, setConfirmed] = useState(confirm);
+    // let message = '';
 
-    async function resendCode() {
-        try {
-            const {phoneNum} = route.params;
-            // console.log('MyPhoneNumber==========>' + phoneNum);
-            const confirmation = await auth().signInWithPhoneNumber(phoneNum);
-            setConfirmed(confirmation);
-            // console.log('Confirmed is =>>>>>>>>>>>>', confirmed);
-            setIsOtpSent(true);
-        }catch(e){
-            alert(e.message, 'hello');
-        }
-    }
+    // async function resendCode() {
+    //     try {
+    //         const {phoneNum} = route.params;
+    //         // console.log('MyPhoneNumber==========>' + phoneNum);
+    //         const confirmation = await auth().signInWithPhoneNumber(phoneNum);
+    //         confirm = confirmation;
+    //         // console.log('Confirmed is =>>>>>>>>>>>>', confirmed);
+    //         setIsOtpSent(true);
+    //     }catch(e){
+    //         alert(e.message, 'hello');
+    //     }
+    // }
     async function confirmCode() {
         try {
-            const response = await confirmed.confirm(otp);
-            response && await AsyncStorage.setItem('isLoggedIn', 'true');
+            const credential = await auth.PhoneAuthProvider.credential(authSnapshot.verificationId, otp);
+            auth().signInWithCredential(credential);
+            await AsyncStorage.setItem('isLoggedIn', 'true');
+            console.log(credential);
             navigation.navigate('Home');
         } catch (error) {
-           alert(error.message, 'hello');
+           alert(error.message, 'hello, hye');
         }
     }
 
-    const handlerFunction = () => {
-        if (!otp) {
-          Alert.alert(null, 'Please enter your otp');
-          otpRef.current.focus();
-        } else {
-          const {confirmOTP} = props;
-          setLoader(true);
-          let promise = new Promise((rsl, rej) => {
-            confirmOTP(otp, confirmed, rsl, rej);
-          });
-          promise.catch(err => {
-            Alert.alert('Sorry', err);
-          });
-        }
-      };
+    // const handlerFunction = () => {
+    //     if (!otp) {
+    //       Alert.alert(null, 'Please enter your otp');
+    //       otpRef.current.focus();
+    //     } 
+    //     else {
+    //       const {confirmOTP} = props;
+    //       setLoader(true);
+    //       let promise = new Promise((rsl, rej) => {
+    //         confirmOTP(otp, confirmed, rsl, rej);
+    //       });
+    //       promise.catch(err => {
+    //         Alert.alert('Sorry', err);
+    //       });
+    //     }
+    //   };
     
     // const startReadSms = async () => {
     //     try{
@@ -86,16 +89,16 @@ const OTPScreen = ({navigation,route}, props) => {
     //     }
     // };
 
-    useEffect(() => {
-        setConfirmed(confirm);
-        let promise = new Promise((rsl, rej) => {
-          props.authState(rsl, rej);
-        });
-        promise.then(res => {
-          // alert('success');
-          handlerFunction();
-        });
-      }, []);
+    // useEffect(() => {
+    //     setConfirmed(confirm);
+    //     let promise = new Promise((rsl, rej) => {
+    //       authState(rsl, rej);
+    //     });
+    //     promise.then(res => {
+    //       // alert('success');
+    //       handlerFunction();
+    //     });
+    //   }, []);
 
     return (
         <KeyboardAwareScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} enableOnAndroid={true}>
@@ -108,7 +111,7 @@ const OTPScreen = ({navigation,route}, props) => {
                     <TextInput ref={otpRef} onChangeText={e=>{setOtp(e)}} value = {otp} style = {[styles.phoneNumberInputStyle, {width: '100%'}]} placeholderTextColor = "#fff" placeholder = "__  __  __  __  __  __ " keyboardType = {'number-pad'} maxLength = {6} />
                 </View>
                 <View style = {{flexDirection: 'row', justifyContent: 'flex-end', marginTop: '1%'}}>
-                {isOtpSent && <Text style = {{alignSelf: 'center', color: '#fff', fontSize: 15}}>Resend OTP in:</Text>}
+                {/* {isOtpSent && <Text style = {{alignSelf: 'center', color: '#fff', fontSize: 15}}>Resend OTP in:</Text>}
                     {isOtpSent && <CountDown
                         until = {time}
                         onFinish = {() => {setIsOtpSent(false);}}
@@ -120,7 +123,7 @@ const OTPScreen = ({navigation,route}, props) => {
                     />}
                     {!isOtpSent && <TouchableOpacity style = {{marginTop: '1%'}} onPress = {resendCode}>
                         <Text style = {{color: 'red', borderBottomWidth: 1, borderBottomColor: 'red'}}>Resend OTP</Text>
-                    </TouchableOpacity>}
+                    </TouchableOpacity>} */}
                 </View>
                 </View>
                 <TouchableOpacity style = {[styles.buttonStyle]} onPress = {() => confirmCode()}>
