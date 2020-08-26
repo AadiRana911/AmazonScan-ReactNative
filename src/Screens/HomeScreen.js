@@ -105,7 +105,7 @@ const HomeScreen = ({navigation}) => {
           // type={RNCamera.Constants.Type.back}
           flashMode="off"
           captureAudio={false}
-          ratio = {'3:4'}
+          ratio = {'1:1'}
           // flashMode={RNCamera.Constants.FlashMode.on}
           onBarCodeRead = {
             (e)=>{

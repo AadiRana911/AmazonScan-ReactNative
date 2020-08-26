@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import React, {useState,useEffect} from 'react';
-import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TextInput, TouchableOpacity, Button} from 'react-native';
 import {styles} from '../Styles/style';
 import CountryPicker from 'react-native-country-picker-modal';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
@@ -21,12 +21,22 @@ const SignIn = ({navigation}) => {
         if (phone !== ''){
             try {
                 const confirmation = await auth().signInWithPhoneNumber('+'+code+phone);
+                auth().onAuthStateChanged( (user) => {
+                    if(user){
+                        if (user.phoneNumber === ('+'+code+phone)) {
+                            navigation.navigate('Home');
+                            console.log(user.phoneNumber);
+                        } 
+                    }
+                    else
+                    {
+                        // reset state if you need to  
+                        // dispatch({ type: "reset_user" });
+                        navigation.navigate('OTP',{confirmation,phone: '+'+code+phone });
+                    }
+                });
                 // setConfirm(confirmation);
-                console.log('=>>>>>>>>>>>>>>>>>>>',confirmation._auth._app._automaticDataCollectionEnabled);
-                confirmation._auth._app._automaticDataCollectionEnabled = false;
-                console.log('==================>',confirmation._auth._app._automaticDataCollectionEnabled);
-
-                navigation.navigate('OTP',{confirmation});
+                console.log('=>>>>>>>>>>>>>>>>>>>',confirmation);
             } catch (e){
                 alert(e.message);
             }
@@ -39,8 +49,11 @@ const SignIn = ({navigation}) => {
     return (
         <KeyboardAwareScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} enableOnAndroid={true}>
         <View style = {styles.Container}>
+        <View style = {{flex: 0.35,justifyContent: 'flex-end'}}>
             <Image style = {styles.logoStyle} source = {require('../../assets/Logo.png')}/>
-            <View style = {[styles.nestedContainerL1]}>
+        </View>
+            
+            <View style = {[styles.nestedContainerL1, {backgroundColor: 'tomato'}]}>
                 <View style = {[styles.nestedContainerL2]}>
                 <Text style = {styles.textStyle}>Phone</Text>
                 <View style = {[styles.nestedContainerL3]}>
@@ -60,6 +73,76 @@ const SignIn = ({navigation}) => {
 
     );
 };
+
+
+// function PhoneSignIn() {
+//   // If null, no SMS has been sent
+//   const [confirm, setConfirm] = useState(null);
+//   const [phone, setPhone] = useState('');
+//   const [code, setCode] = useState('');
+//   // Handle the button press
+//   async function signInWithPhoneNumber(phoneNumber) {
+//     try{
+//         const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+//         auth().onAuthStateChanged( (user) => {
+//             if (user.phoneNumber === `+92${phone}`) {
+//                 // Obviously, you can add more statements here, 
+//                 //       e.g. call an action creator if you use Redux. 
+    
+//                 // navigate the user away from the login screens: 
+//                 alert('Done');
+//                 console.log(user.phoneNumber);
+//             } 
+//             else 
+//             {
+//                 // reset state if you need to  
+//                 // dispatch({ type: "reset_user" });
+//                 alert('Not Done')
+//             }
+//         });
+//         setConfirm(confirmation);
+//         console.log(confirm);
+//     }catch(e){
+//         alert(e.message)
+//     }
+//   }
+
+// //   function confirmCode() {
+// //       confirm
+// //       .confirm(code)
+// //       .then(user => {
+// //           alert(`Verified ${user.uid}`);
+// //           console.log(confirm);
+// //       })
+// //       .catch(e => {
+// //           alert(e.message)
+// //       });
+// //   }
+// //   useEffect( () => {
+    
+// // }, []);
+
+//   if (!confirm) {
+//     return (
+//         <View>
+//             <TextInput value={phone} onChangeText={text => setPhone(text)} keyboardType = {'number-pad'}/>
+//             <Button
+//                 title="Phone Number Sign In"
+//                 onPress={() => signInWithPhoneNumber('+923072179416')}
+//             />
+//         </View>
+//     );
+//   }else{
+//     return (
+//         <>
+//           <TextInput value={code} onChangeText={text => setCode(text)} />
+//           <Button title="Confirm Code"/>
+//         </>
+//       );
+//   }
+
+  
+// }
 
 
 
