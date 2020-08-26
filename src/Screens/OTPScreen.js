@@ -42,7 +42,7 @@ const OTPScreen = ({navigation,route}, props) => {
     async function confirmCode() {
         try {
             await confirmation.confirm(otp);
-            // await AsyncStorage.setItem('isLoggedIn', 'true');
+            await AsyncStorage.setItem('isLoggedIn', 'true');
             navigation.navigate('Home');
         } catch (error) {
            alert(error.message, 'hello, hye');

@@ -1,23 +1,19 @@
 /* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
-  camContainer: {
-    flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
   Container: {
     flex: 1,
     backgroundColor: '#2a3e5a',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBottom: '15%',
+    padding: 10,
+    paddingBottom: 25,
   },
 
   nestedContainerL1: {
     // backgroundColor: '#ff0000',
     width: '90%',
-    flex: 0.1,
+    flex: 0.01,
     justifyContent: 'space-around',
   },
   nestedContainerL3: {
@@ -66,7 +62,7 @@ export const styles = StyleSheet.create({
   preview: {
     flexDirection: 'column',
     alignSelf: 'center',
-    width: 400,
+    width: 350,
     height: 100,
   },
 });

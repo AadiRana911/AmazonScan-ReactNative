@@ -105,7 +105,7 @@ const HomeScreen = ({navigation}) => {
           // type={RNCamera.Constants.Type.back}
           flashMode="off"
           captureAudio={false}
-          ratio = {'1:1'}
+          ratio = {'3:4'}
           // flashMode={RNCamera.Constants.FlashMode.on}
           onBarCodeRead = {
             (e)=>{
@@ -149,7 +149,7 @@ const HomeScreen = ({navigation}) => {
         </View>
         <Text style = {[styles.textStyle, style.orButtonAlignment]}>Or</Text>  */}
         <View style = {style.bottomViewStyle}>
-          <TextInput onChangeText = {(e) => setUpc({data:e})} value = {upc} style = {style.upcCodeInputStyle} placeholder = 'Write your upc code here' keyboardType = 'number-pad'/>
+          <TextInput onChangeText = {(e) => setUpc({data:e})} value = {upc.data} style = {style.upcCodeInputStyle} placeholder = 'Write your upc code here' keyboardType = 'number-pad'/>
           <TouchableOpacity style = {style.addButtonStyle} onPress = {() => {onBarCodeRead(upc, true)}}>
             <Text style = {[styles.buttonTextStyle, style.addButtonText]}>Add</Text>
           </TouchableOpacity>

@@ -21,9 +21,10 @@ const SignIn = ({navigation}) => {
         if (phone !== ''){
             try {
                 const confirmation = await auth().signInWithPhoneNumber('+'+code+phone);
-                auth().onAuthStateChanged( (user) => {
+                auth().onAuthStateChanged( async(user) => {
                     if(user){
                         if (user.phoneNumber === ('+'+code+phone)) {
+                            await AsyncStorage.setItem('isLoggedIn', 'true');
                             navigation.navigate('Home');
                             console.log(user.phoneNumber);
                         } 
@@ -36,7 +37,6 @@ const SignIn = ({navigation}) => {
                     }
                 });
                 // setConfirm(confirmation);
-                console.log('=>>>>>>>>>>>>>>>>>>>',confirmation);
             } catch (e){
                 alert(e.message);
             }
@@ -45,15 +45,27 @@ const SignIn = ({navigation}) => {
         }
        // setConfirm(confirmation);
     }
+    useEffect(() => {
+        console.log('outside')
+        const storeDataLocally = async() => {
+            console.log('inside')
+            const user = await AsyncStorage.getItem('isLoggedIn');
+            console.log('user is'+user);
+            if(user==='true'){
+                navigation.navigate('Home');
+            }
+        }
+        storeDataLocally();
+    },[]);
 
     return (
         <KeyboardAwareScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} enableOnAndroid={true}>
         <View style = {styles.Container}>
-        <View style = {{flex: 0.35,justifyContent: 'flex-end'}}>
+        <View style = {{flex: 0.15,justifyContent: 'flex-end'}}>
             <Image style = {styles.logoStyle} source = {require('../../assets/Logo.png')}/>
         </View>
             
-            <View style = {[styles.nestedContainerL1]}>
+            <View style = {[styles.nestedContainerL1,]}>
                 <View style = {[styles.nestedContainerL2]}>
                 <Text style = {styles.textStyle}>Phone</Text>
                 <View style = {[styles.nestedContainerL3]}>
