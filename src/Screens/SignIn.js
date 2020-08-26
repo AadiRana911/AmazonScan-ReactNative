@@ -53,7 +53,7 @@ const SignIn = ({navigation}) => {
             <Image style = {styles.logoStyle} source = {require('../../assets/Logo.png')}/>
         </View>
             
-            <View style = {[styles.nestedContainerL1, {backgroundColor: 'tomato'}]}>
+            <View style = {[styles.nestedContainerL1]}>
                 <View style = {[styles.nestedContainerL2]}>
                 <Text style = {styles.textStyle}>Phone</Text>
                 <View style = {[styles.nestedContainerL3]}>
