@@ -7,11 +7,13 @@ import SignIn from './src/Screens/SignIn';
 import OTPScreen from './src/Screens/OTPScreen';
 import HomeScreen from './src/Screens/HomeScreen';
 import ResultsShowScreen from './src/Screens/ResultsShowScreen';
+import SplashScreen from './src/Screens/SplashScreen';
 const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Splash" component={SplashScreen} options = {{title: "Splash", headerShown: false}}/>
         <Stack.Screen name="SignIn" component={SignIn} options = {{title: "Sign In", headerShown: false}}/>
         <Stack.Screen name="OTP" component={OTPScreen} options = {{title: "OTP", headerShown: false}}/>
         <Stack.Screen name="Home" component={HomeScreen} options = {{title: "Home", headerShown: false}}/>

@@ -3,27 +3,32 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import React, {useState} from 'react';
-import {ActivityIndicator, View, Text, Image, TextInput, TouchableOpacity, Alert, Switch, StyleSheet} from 'react-native';
+import {
+  ActivityIndicator,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  StyleSheet,
+  BackHandler}
+from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import {styles} from '../Styles/style';
 import {RNCamera} from 'react-native-camera';
 import axios from 'axios';
-
-// import Entypo from 'react-native-vector-icons/Entypo';
-// import RNBeep from 'react-native-a-beep'
-
-
-// set up the request parameters
-
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const HomeScreen = ({navigation}) => {
-  // const [isEnabled, setIsEnabled] = useState(false);
   const [isCaptured, setIsCaptured] = useState(false);
   let currentBarCodeValue = '';
   let results;
   const [upc, setUpc] = useState({data: ''});
   const [isRequested, setIsRequested] = useState(false);
+  BackHandler.addEventListener('hardwareBackPress',() => BackHandler.exitApp());
  const rainForestSearchApi = async(paramsToSearch) => {
-   try{
+   try {
     console.log('Current: ', currentBarCodeValue);
     setIsRequested(true);
     const res = await axios.get('https://api.rainforestapi.com/request', { params: paramsToSearch });
@@ -155,9 +160,9 @@ const HomeScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
-      {/* <TouchableOpacity onPress = {() => {}}>
+      <TouchableOpacity onPress = {async() => {await AsyncStorage.removeItem('isLoggedIn');navigation.navigate('SignIn');console.log(await AsyncStorage.getItem('isLoggedIn')+'after Logging Out')}}>
         <Entypo style = {style.icon} color = {'#fff'} name = 'log-out'/>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   );
 };
@@ -240,7 +245,7 @@ const style = StyleSheet.create({
     fontSize: 20,
   },
   icon: {
-    fontSize: 38,
+    fontSize: 40,
     // backgroundColor: 'green',
   },
   activityContainer: {

@@ -10,14 +10,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import CountDown from 'react-native-countdown-component';
 import auth from '@react-native-firebase/auth';
 // import {requestReadSMSPermission, startReadSMS} from 'react-native-read-sms/ReadSms';
-import {
-    confirmOTP,
-    authState,
-    signInWithPhone,
-    signup,
-  } from '../actions/auth';
 
-const OTPScreen = ({navigation,route}, props) => {
+const OTPScreen = ({navigation,route}) => {
     const [time, setTime] = useState(60);
     const [loader, setLoader] = useState(false);
     const otpRef = createRef('otp');
